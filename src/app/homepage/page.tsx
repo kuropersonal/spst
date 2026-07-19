@@ -132,6 +132,7 @@ export default function Homepage() {
       const zoomDistance = window.innerHeight * 0.18;
       const fadeDistance = window.innerHeight * 0.45;
       const frameDistance = window.innerHeight * 0.45;
+      const frameShiftDistance = window.innerHeight * 4.5;
       const progress = clamp(relativeScroll / travelDistance, 0, 1);
       const zoomProgress = clamp(
         (relativeScroll - travelDistance) / zoomDistance,
@@ -143,12 +144,18 @@ export default function Homepage() {
         0,
         1,
       );
+      const frameStartScroll = travelDistance + zoomDistance + fadeDistance;
       const frameProgress = clamp(
-        (relativeScroll - travelDistance - zoomDistance - fadeDistance) /
-          frameDistance,
+        (relativeScroll - frameStartScroll) / frameDistance,
         0,
         1,
       );
+      const frameShiftProgress = clamp(
+        (relativeScroll - frameStartScroll - frameDistance) / frameShiftDistance,
+        0,
+        1,
+      );
+      const parisProgress = frameShiftProgress;
       const mapX = lerp(mapStart.x, mapEnd.x, progress);
       const mapY = lerp(mapStart.y, mapEnd.y, progress);
       const mapScale = lerp(mapStart.scale, mapEnd.scale, progress);
@@ -160,7 +167,12 @@ export default function Homepage() {
       const flagScale = lerp(flagStart.scale, flagEnd.scale, progress);
       const pathY = lerp(pathStart.y, pathEnd.y, progress);
       const artworkScale = lerp(1, 1.08, zoomProgress);
-
+      const shiftedWindow = {
+        left: 10,
+        top: 10,
+        width: 40,
+        height: 52,
+      };
       artworkElement.style.opacity = (1 - mapFade * 0.24).toString();
       artworkElement.style.transform = `scale(${artworkScale})`;
       mapElement.style.transform = `translate3d(${mapX}vw, ${mapY}vh, 0) scale(${mapScale})`;
@@ -168,10 +180,42 @@ export default function Homepage() {
       flagElement.style.transform = `translate3d(${flagX}vw, ${flagY}vh, 0) scale(${flagScale})`;
       pathElement.style.transform = `translate3d(0, ${pathY}vh, 0)`;
       transitionMapElement.style.opacity = mapFade.toString();
+      transitionMapElement.style.clipPath = `inset(
+        ${lerp(0, shiftedWindow.top, frameShiftProgress)}vh
+        ${lerp(0, 100 - shiftedWindow.left - shiftedWindow.width, frameShiftProgress)}vw
+        ${lerp(0, 100 - shiftedWindow.top - shiftedWindow.height, frameShiftProgress)}vh
+        ${lerp(0, shiftedWindow.left, frameShiftProgress)}vw
+      )`;
       frameTopElement.style.opacity = frameProgress.toString();
       frameRightElement.style.opacity = frameProgress.toString();
       frameBottomElement.style.opacity = frameProgress.toString();
       frameLeftElement.style.opacity = frameProgress.toString();
+      frameTopElement.style.height = `${lerp(15, 10, frameShiftProgress)}vh`;
+      frameRightElement.style.top = `${lerp(15, 10, frameShiftProgress)}vh`;
+      frameRightElement.style.bottom = `${lerp(10, 38, frameShiftProgress)}vh`;
+      frameRightElement.style.width = `${lerp(24, 50, frameShiftProgress)}vw`;
+      frameBottomElement.style.height = `${lerp(10, 38, frameShiftProgress)}vh`;
+      frameLeftElement.style.top = `${lerp(15, 10, frameShiftProgress)}vh`;
+      frameLeftElement.style.bottom = `${lerp(10, 38, frameShiftProgress)}vh`;
+      frameLeftElement.style.width = `${lerp(26, 10, frameShiftProgress)}vw`;
+      const sideTextureTop = `-${lerp(15, 10, frameShiftProgress)}vh`;
+      const rightTexture = frameRightElement.firstElementChild;
+      const leftTexture = frameLeftElement.firstElementChild;
+
+      if (rightTexture instanceof HTMLElement) {
+        rightTexture.style.top = sideTextureTop;
+      }
+
+      if (leftTexture instanceof HTMLElement) {
+        leftTexture.style.top = sideTextureTop;
+      }
+
+      window.dispatchEvent(
+        new CustomEvent("homepage-map-paris-progress", {
+          detail: parisProgress,
+        }),
+      );
+
       frameTopElement.style.transform = `translate3d(0, ${lerp(-100, 0, frameProgress)}%, 0)`;
       frameRightElement.style.transform = `translate3d(${lerp(100, 0, frameProgress)}%, 0, 0)`;
       frameBottomElement.style.transform = `translate3d(0, ${lerp(100, 0, frameProgress)}%, 0)`;
@@ -207,7 +251,7 @@ export default function Homepage() {
   return (
     <main
       ref={sceneRef}
-      className="relative h-[280vh] bg-cover bg-center bg-no-repeat"
+      className="relative h-[730vh] bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/vietnam-timeline-background.png')" }}
     >
       <div className="sticky top-0 h-screen overflow-hidden">
@@ -287,15 +331,19 @@ export default function Homepage() {
         <div
           ref={transitionMapRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 opacity-0 will-change-opacity"
+          className="pointer-events-none absolute inset-0 z-10 opacity-0 will-change-[clip-path,opacity,transform]"
+          style={{
+            clipPath: "inset(0 0 0 0)",
+            transform: "translate3d(0, 0, 0)",
+          }}
         >
-          <NorthMapScene className="h-full w-full" clipToVietnam />
+          <NorthMapScene className="h-full w-full" clipToVietnam enableParisScroll />
         </div>
 
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20">
           <div
             ref={frameTopRef}
-            className="absolute left-0 right-0 top-0 h-[15vh] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[opacity,transform]"
+            className="absolute left-0 right-0 top-0 h-[15vh] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[height,opacity,transform]"
             style={{ transform: "translate3d(0, -100%, 0)" }}
           >
             <div
@@ -308,7 +356,7 @@ export default function Homepage() {
 
           <div
             ref={frameRightRef}
-            className="absolute bottom-[10vh] right-0 top-[15vh] w-[24vw] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[opacity,transform]"
+            className="absolute bottom-[10vh] right-0 top-[15vh] w-[24vw] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[bottom,opacity,top,transform,width]"
             style={{ transform: "translate3d(100%, 0, 0)" }}
           >
             <div
@@ -321,7 +369,7 @@ export default function Homepage() {
 
           <div
             ref={frameBottomRef}
-            className="absolute bottom-0 left-0 right-0 h-[10vh] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[opacity,transform]"
+            className="absolute bottom-0 left-0 right-0 h-[10vh] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[height,opacity,transform]"
             style={{ transform: "translate3d(0, 100%, 0)" }}
           >
             <div
@@ -334,7 +382,7 @@ export default function Homepage() {
 
           <div
             ref={frameLeftRef}
-            className="absolute bottom-[10vh] left-0 top-[15vh] w-[26vw] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[opacity,transform]"
+            className="absolute bottom-[10vh] left-0 top-[15vh] w-[26vw] overflow-hidden bg-[#e8ddbf] opacity-0 will-change-[bottom,opacity,top,transform,width]"
             style={{ transform: "translate3d(-100%, 0, 0)" }}
           >
             <div

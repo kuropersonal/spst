@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import maplibregl, { Map, type StyleSpecification } from "maplibre-gl";
+import maplibregl, { Map, type Marker, type StyleSpecification } from "maplibre-gl";
 
 type LonLat = [number, number] | [number, number, number];
 type GeoJsonRing = LonLat[];
@@ -50,6 +50,9 @@ const vietnamGeoJsonPath = "/data/geo/vietnam.geojson";
 const outsideVietnamPatternId = "homepage-background-mask";
 const outsideVietnamPatternPath = "/images/vietnam-timeline-background.png";
 const clippedMapBackground = "#e8ddbf";
+const parisCameraProgressEvent = "homepage-map-paris-progress";
+const parisCenter: [number, number] = [2.3522, 48.8566];
+const parisFinalZoom = 11.2;
 
 const northOverlayStyle: StyleSpecification = {
   version: 8,
@@ -271,14 +274,92 @@ function fitNorthView(map: Map, container: HTMLElement) {
   });
 }
 
+function lerp(start: number, end: number, progress: number) {
+  return start + (end - start) * progress;
+}
+
+function easeInOut(progress: number) {
+  return progress * progress * (3 - 2 * progress);
+}
+
+function applyParisCamera(map: Map, progress: number) {
+  const clampedProgress = Math.min(Math.max(progress, 0), 1);
+
+  if (clampedProgress <= 0) {
+    return;
+  }
+
+  const zoomOutProgress = Math.min(clampedProgress / 0.36, 1);
+  const parisProgress = Math.max((clampedProgress - 0.12) / 0.88, 0);
+  const centerProgress = easeInOut(parisProgress);
+  const zoomInProgress = easeInOut(
+    Math.min(Math.max((clampedProgress - 0.36) / 0.64, 0), 1),
+  );
+  const zoom =
+    clampedProgress < 0.36
+      ? lerp(6.15, 2.35, zoomOutProgress)
+      : lerp(2.35, parisFinalZoom, zoomInProgress);
+  const canvas = map.getCanvas();
+  const offset: [number, number] = [
+    -canvas.clientWidth * 0.2 * clampedProgress,
+    -canvas.clientHeight * 0.14 * clampedProgress,
+  ];
+
+  map.easeTo({
+    center: [
+      lerp(initialCenter[0], parisCenter[0], centerProgress),
+      lerp(initialCenter[1], parisCenter[1], centerProgress),
+    ],
+    zoom,
+    offset,
+    pitch: 0,
+    bearing: 0,
+    duration: 0,
+    essential: true,
+  });
+}
+
+function createParisMarkerElement() {
+  const marker = document.createElement("div");
+  marker.className = "paris-milestone-marker";
+  marker.innerHTML = `
+    <span class="paris-milestone-pin"></span>
+    <span class="paris-milestone-label">
+      <strong>Pari</strong>
+      <small>1920</small>
+    </span>
+  `;
+  marker.style.opacity = "0";
+  marker.style.transform = "translateY(8px) scale(0.92)";
+
+  return marker;
+}
+
+function updateParisMarker(marker: HTMLElement | null, progress: number) {
+  if (!marker) {
+    return;
+  }
+
+  const markerProgress = Math.min(Math.max((progress - 0.68) / 0.22, 0), 1);
+
+  marker.style.opacity = markerProgress.toString();
+  marker.style.transform = `translateY(${lerp(8, 0, markerProgress)}px) scale(${lerp(
+    0.92,
+    1,
+    markerProgress,
+  )})`;
+}
+
 type NorthMapSceneProps = {
   className?: string;
   clipToVietnam?: boolean;
+  enableParisScroll?: boolean;
 };
 
 export default function NorthMapScene({
   className = "",
   clipToVietnam = false,
+  enableParisScroll = false,
 }: NorthMapSceneProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
@@ -326,13 +407,21 @@ export default function NorthMapScene({
 
     mapRef.current = map;
     let vietnamDataForClip: GeoJsonFeatureCollection | null = null;
+    let parisMarker: Marker | null = null;
+    let parisMarkerElement: HTMLElement | null = null;
+    let parisProgress = 0;
     let isDisposed = false;
 
     const resizeMap = () => {
       map.resize();
+      if (enableParisScroll && parisProgress > 0) {
+        applyParisCamera(map, parisProgress);
+        return;
+      }
+
       fitNorthView(map, container);
 
-      if (clipToVietnam && vietnamDataForClip) {
+      if (clipToVietnam && vietnamDataForClip && parisProgress <= 0) {
         applyVietnamClipPath(map, container, vietnamDataForClip);
       }
     };
@@ -340,6 +429,34 @@ export default function NorthMapScene({
     const resizeObserver = new ResizeObserver(resizeMap);
     resizeObserver.observe(container);
     requestAnimationFrame(resizeMap);
+
+    const handleParisProgress = (event: Event) => {
+      if (!enableParisScroll) {
+        return;
+      }
+
+      parisProgress =
+        event instanceof CustomEvent && typeof event.detail === "number"
+          ? event.detail
+          : 0;
+
+      if (parisProgress > 0) {
+        container.style.clipPath = "";
+        container.style.removeProperty("-webkit-clip-path");
+        applyParisCamera(map, parisProgress);
+        updateParisMarker(parisMarkerElement, parisProgress);
+        return;
+      }
+
+      updateParisMarker(parisMarkerElement, 0);
+      fitNorthView(map, container);
+
+      if (clipToVietnam && vietnamDataForClip) {
+        applyVietnamClipPath(map, container, vietnamDataForClip);
+      }
+    };
+
+    window.addEventListener(parisCameraProgressEvent, handleParisProgress);
 
     map.on("load", () => {
       const maskAssets = clipToVietnam
@@ -376,6 +493,16 @@ export default function NorthMapScene({
             );
           }
 
+          if (enableParisScroll) {
+            parisMarkerElement = createParisMarkerElement();
+            parisMarker = new maplibregl.Marker({
+              element: parisMarkerElement,
+              anchor: "bottom",
+            })
+              .setLngLat(parisCenter)
+              .addTo(map);
+          }
+
           setIsLoaded(true);
         })
         .catch((error: unknown) => {
@@ -402,13 +529,15 @@ export default function NorthMapScene({
 
     return () => {
       isDisposed = true;
+      window.removeEventListener(parisCameraProgressEvent, handleParisProgress);
       resizeObserver.disconnect();
+      parisMarker?.remove();
       container.style.clipPath = "";
       container.style.removeProperty("-webkit-clip-path");
       map.remove();
       mapRef.current = null;
     };
-  }, [clipToVietnam]);
+  }, [clipToVietnam, enableParisScroll]);
 
   return (
     <div
