@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #eef3f1;
+  --foreground: #172421;
 }
 
 @theme inline {
@@ -23,4 +23,96 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.maplibregl-map {
+  position: relative;
+  overflow: hidden;
+}
+
+.maplibregl-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.maplibregl-canvas-container,
+.maplibregl-control-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.maplibregl-canvas-container {
+  pointer-events: auto;
+}
+
+.maplibregl-ctrl-top-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  pointer-events: auto;
+}
+
+.maplibregl-ctrl-bottom-right {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  pointer-events: auto;
+}
+
+.history-marker {
+  width: 26px;
+  height: 26px;
+  border: 3px solid #fffaf0;
+  border-radius: 999px;
+  background: #db5334;
+  box-shadow: 0 10px 22px rgb(20 29 26 / 30%);
+  cursor: pointer;
+}
+
+.history-marker::after {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 10px;
+  height: 10px;
+  background: #db5334;
+  content: "";
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.history-marker:focus-visible {
+  outline: 3px solid #2f7dbd;
+  outline-offset: 4px;
+}
+
+.history-popup .maplibregl-popup-content {
+  max-width: 260px;
+  border-radius: 8px;
+  border: 1px solid rgb(34 48 43 / 12%);
+  background: #fffdf6;
+  color: #172421;
+  box-shadow: 0 18px 40px rgb(20 29 26 / 22%);
+}
+
+.history-popup strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.history-popup span {
+  display: block;
+  margin-top: 4px;
+  color: #24614d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.history-popup p {
+  margin-top: 8px;
+  color: #4f5d56;
+  font-size: 13px;
+  line-height: 1.45;
 }
