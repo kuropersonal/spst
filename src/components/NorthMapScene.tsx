@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import maplibregl, { Map, type Marker, type StyleSpecification } from "maplibre-gl";
+import maplibregl, { Map, type StyleSpecification } from "maplibre-gl";
 
 type LonLat = [number, number] | [number, number, number];
 type GeoJsonRing = LonLat[];
@@ -53,6 +53,149 @@ const clippedMapBackground = "#e8ddbf";
 const parisCameraProgressEvent = "homepage-map-paris-progress";
 const parisCenter: [number, number] = [2.3522, 48.8566];
 const parisFinalZoom = 11.2;
+const guangzhouCenter: [number, number] = [113.2644, 23.1291];
+const guangzhouFinalZoom = 10.6;
+const guangzhouRouteZoom = 3;
+const hongKongCenter: [number, number] = [114.1694, 22.3193];
+const hongKongFinalZoom = 11;
+const hongKongRouteZoom = 8.2;
+
+type CameraTimelineProgress = {
+  parisProgress: number;
+  guangzhouProgress: number;
+  hongKongProgress: number;
+  timelineProgresses: number[];
+};
+
+type CameraTimelinePoint = {
+  center: [number, number];
+  finalZoom: number;
+  routeZoom: number;
+  offset: [number, number];
+};
+
+const cameraTimelinePoints: CameraTimelinePoint[] = [
+  {
+    center: parisCenter,
+    finalZoom: parisFinalZoom,
+    routeZoom: 2.35,
+    offset: [-0.2, -0.14],
+  },
+  {
+    center: guangzhouCenter,
+    finalZoom: guangzhouFinalZoom,
+    routeZoom: guangzhouRouteZoom,
+    offset: [0.22, -0.16],
+  },
+  {
+    center: hongKongCenter,
+    finalZoom: hongKongFinalZoom,
+    routeZoom: hongKongRouteZoom,
+    offset: [0.24, 0.18],
+  },
+  {
+    center: hongKongCenter,
+    finalZoom: 11.25,
+    routeZoom: 10.4,
+    offset: [0.24, 0.18],
+  },
+  {
+    center: [105.7042, 18.3559],
+    finalZoom: 8.8,
+    routeZoom: 5.2,
+    offset: [0.2, -0.08],
+  },
+  {
+    center: [113.5439, 22.1987],
+    finalZoom: 11,
+    routeZoom: 5.5,
+    offset: [0.23, 0.2],
+  },
+  {
+    center: [106.313, 22.833],
+    finalZoom: 9.8,
+    routeZoom: 6,
+    offset: [0.16, -0.16],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.2,
+    routeZoom: 8,
+    offset: [0.2, -0.1],
+  },
+  {
+    center: [105.834, 21.0368],
+    finalZoom: 11.8,
+    routeZoom: 10.2,
+    offset: [0.22, -0.08],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.4,
+    routeZoom: 9.2,
+    offset: [0.17, -0.16],
+  },
+  {
+    center: [105.2573, 22.1469],
+    finalZoom: 9.7,
+    routeZoom: 7.8,
+    offset: [0.16, -0.18],
+  },
+  {
+    center: [103.0169, 21.386],
+    finalZoom: 9.2,
+    routeZoom: 7,
+    offset: [0.12, -0.08],
+  },
+  {
+    center: [6.1432, 46.2044],
+    finalZoom: 10.8,
+    routeZoom: 3.1,
+    offset: [0.18, -0.14],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.1,
+    routeZoom: 3.1,
+    offset: [0.2, -0.1],
+  },
+  {
+    center: [106.7009, 10.7769],
+    finalZoom: 9.8,
+    routeZoom: 5.6,
+    offset: [0.22, 0.12],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.2,
+    routeZoom: 5.7,
+    offset: [0.18, -0.12],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.8,
+    routeZoom: 9.8,
+    offset: [0.2, -0.1],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 11,
+    routeZoom: 10,
+    offset: [0.18, -0.04],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 10.8,
+    routeZoom: 9.8,
+    offset: [0.2, -0.1],
+  },
+  {
+    center: [105.8342, 21.0278],
+    finalZoom: 11.2,
+    routeZoom: 10,
+    offset: [0.18, -0.12],
+  },
+];
 
 const northOverlayStyle: StyleSpecification = {
   version: 8,
@@ -319,35 +462,189 @@ function applyParisCamera(map: Map, progress: number) {
   });
 }
 
-function createParisMarkerElement() {
-  const marker = document.createElement("div");
-  marker.className = "paris-milestone-marker";
-  marker.innerHTML = `
-    <span class="paris-milestone-pin"></span>
-    <span class="paris-milestone-label">
-      <strong>Pari</strong>
-      <small>1920</small>
-    </span>
-  `;
-  marker.style.opacity = "0";
-  marker.style.transform = "translateY(8px) scale(0.92)";
+function applyGuangzhouCamera(map: Map, progress: number) {
+  const clampedProgress = Math.min(Math.max(progress, 0), 1);
+  const centerProgress = easeInOut(clampedProgress);
+  const zoomProgress =
+    clampedProgress < 0.5
+      ? easeInOut(clampedProgress / 0.5)
+      : easeInOut((clampedProgress - 0.5) / 0.5);
+  const zoom =
+    clampedProgress < 0.5
+      ? lerp(parisFinalZoom, guangzhouRouteZoom, zoomProgress)
+      : lerp(guangzhouRouteZoom, guangzhouFinalZoom, zoomProgress);
+  const canvas = map.getCanvas();
+  const offsetProgress = easeInOut(clampedProgress);
+  const offset: [number, number] = [
+    canvas.clientWidth * lerp(-0.2, 0.22, offsetProgress),
+    canvas.clientHeight * lerp(-0.14, -0.16, offsetProgress),
+  ];
 
-  return marker;
+  map.easeTo({
+    center: [
+      lerp(parisCenter[0], guangzhouCenter[0], centerProgress),
+      lerp(parisCenter[1], guangzhouCenter[1], centerProgress),
+    ],
+    zoom,
+    offset,
+    pitch: 0,
+    bearing: 0,
+    duration: 0,
+    essential: true,
+  });
 }
 
-function updateParisMarker(marker: HTMLElement | null, progress: number) {
-  if (!marker) {
+function applyHongKongCamera(map: Map, progress: number) {
+  const clampedProgress = Math.min(Math.max(progress, 0), 1);
+  const centerProgress = easeInOut(clampedProgress);
+  const zoomProgress =
+    clampedProgress < 0.5
+      ? easeInOut(clampedProgress / 0.5)
+      : easeInOut((clampedProgress - 0.5) / 0.5);
+  const zoom =
+    clampedProgress < 0.5
+      ? lerp(guangzhouFinalZoom, hongKongRouteZoom, zoomProgress)
+      : lerp(hongKongRouteZoom, hongKongFinalZoom, zoomProgress);
+  const canvas = map.getCanvas();
+  const offsetProgress = easeInOut(clampedProgress);
+  const offset: [number, number] = [
+    canvas.clientWidth * lerp(0.22, 0.24, offsetProgress),
+    canvas.clientHeight * lerp(-0.16, 0.18, offsetProgress),
+  ];
+
+  map.easeTo({
+    center: [
+      lerp(guangzhouCenter[0], hongKongCenter[0], centerProgress),
+      lerp(guangzhouCenter[1], hongKongCenter[1], centerProgress),
+    ],
+    zoom,
+    offset,
+    pitch: 0,
+    bearing: 0,
+    duration: 0,
+    essential: true,
+  });
+}
+
+function applyTimelinePointCamera(map: Map, index: number, progress: number) {
+  const currentPoint = cameraTimelinePoints[index];
+  const previousPoint = cameraTimelinePoints[index - 1];
+
+  if (!currentPoint) {
     return;
   }
 
-  const markerProgress = Math.min(Math.max((progress - 0.68) / 0.22, 0), 1);
+  if (!previousPoint) {
+    applyParisCamera(map, progress);
+    return;
+  }
 
-  marker.style.opacity = markerProgress.toString();
-  marker.style.transform = `translateY(${lerp(8, 0, markerProgress)}px) scale(${lerp(
-    0.92,
-    1,
-    markerProgress,
-  )})`;
+  const clampedProgress = Math.min(Math.max(progress, 0), 1);
+  const centerProgress = easeInOut(clampedProgress);
+  const zoomProgress =
+    clampedProgress < 0.5
+      ? easeInOut(clampedProgress / 0.5)
+      : easeInOut((clampedProgress - 0.5) / 0.5);
+  const zoom =
+    clampedProgress < 0.5
+      ? lerp(previousPoint.finalZoom, currentPoint.routeZoom, zoomProgress)
+      : lerp(currentPoint.routeZoom, currentPoint.finalZoom, zoomProgress);
+  const canvas = map.getCanvas();
+  const offsetProgress = easeInOut(clampedProgress);
+  const offset: [number, number] = [
+    canvas.clientWidth *
+      lerp(previousPoint.offset[0], currentPoint.offset[0], offsetProgress),
+    canvas.clientHeight *
+      lerp(previousPoint.offset[1], currentPoint.offset[1], offsetProgress),
+  ];
+
+  map.easeTo({
+    center: [
+      lerp(previousPoint.center[0], currentPoint.center[0], centerProgress),
+      lerp(previousPoint.center[1], currentPoint.center[1], centerProgress),
+    ],
+    zoom,
+    offset,
+    pitch: 0,
+    bearing: 0,
+    duration: 0,
+    essential: true,
+  });
+}
+
+function applyTimelineCamera(map: Map, progress: CameraTimelineProgress) {
+  if (progress.timelineProgresses.length > 0) {
+    let activeIndex = -1;
+
+    progress.timelineProgresses.forEach((eventProgress, index) => {
+      if (eventProgress > 0) {
+        activeIndex = index;
+      }
+    });
+
+    if (activeIndex >= 0) {
+      applyTimelinePointCamera(
+        map,
+        activeIndex,
+        progress.timelineProgresses[activeIndex],
+      );
+    }
+
+    return;
+  }
+
+  if (progress.hongKongProgress > 0) {
+    applyHongKongCamera(map, progress.hongKongProgress);
+    return;
+  }
+
+  if (progress.guangzhouProgress > 0) {
+    applyGuangzhouCamera(map, progress.guangzhouProgress);
+    return;
+  }
+
+  applyParisCamera(map, progress.parisProgress);
+}
+
+function parseCameraProgress(detail: unknown): CameraTimelineProgress {
+  if (typeof detail === "number") {
+    return {
+      parisProgress: detail,
+      guangzhouProgress: 0,
+      hongKongProgress: 0,
+      timelineProgresses: [],
+    };
+  }
+
+  if (detail && typeof detail === "object") {
+    const progress = detail as Partial<CameraTimelineProgress>;
+
+    return {
+      parisProgress:
+        typeof progress.parisProgress === "number" ? progress.parisProgress : 0,
+      guangzhouProgress:
+        typeof progress.guangzhouProgress === "number"
+          ? progress.guangzhouProgress
+          : 0,
+      hongKongProgress:
+        typeof progress.hongKongProgress === "number"
+          ? progress.hongKongProgress
+          : 0,
+      timelineProgresses: Array.isArray(progress.timelineProgresses)
+        ? progress.timelineProgresses.filter(
+            (eventProgress): eventProgress is number =>
+              typeof eventProgress === "number",
+          )
+        : [],
+    };
+  }
+
+  return {
+    parisProgress: 0,
+    guangzhouProgress: 0,
+    hongKongProgress: 0,
+    timelineProgresses: [],
+  };
 }
 
 type NorthMapSceneProps = {
@@ -407,21 +704,30 @@ export default function NorthMapScene({
 
     mapRef.current = map;
     let vietnamDataForClip: GeoJsonFeatureCollection | null = null;
-    let parisMarker: Marker | null = null;
-    let parisMarkerElement: HTMLElement | null = null;
-    let parisProgress = 0;
+    let cameraProgress: CameraTimelineProgress = {
+      parisProgress: 0,
+      guangzhouProgress: 0,
+      hongKongProgress: 0,
+      timelineProgresses: [],
+    };
     let isDisposed = false;
 
     const resizeMap = () => {
       map.resize();
-      if (enableParisScroll && parisProgress > 0) {
-        applyParisCamera(map, parisProgress);
+      if (
+        enableParisScroll &&
+        (cameraProgress.parisProgress > 0 ||
+          cameraProgress.guangzhouProgress > 0 ||
+          cameraProgress.hongKongProgress > 0 ||
+          cameraProgress.timelineProgresses.some((eventProgress) => eventProgress > 0))
+      ) {
+        applyTimelineCamera(map, cameraProgress);
         return;
       }
 
       fitNorthView(map, container);
 
-      if (clipToVietnam && vietnamDataForClip && parisProgress <= 0) {
+      if (clipToVietnam && vietnamDataForClip) {
         applyVietnamClipPath(map, container, vietnamDataForClip);
       }
     };
@@ -435,20 +741,28 @@ export default function NorthMapScene({
         return;
       }
 
-      parisProgress =
-        event instanceof CustomEvent && typeof event.detail === "number"
-          ? event.detail
-          : 0;
+      cameraProgress =
+        event instanceof CustomEvent
+          ? parseCameraProgress(event.detail)
+          : {
+              parisProgress: 0,
+              guangzhouProgress: 0,
+              hongKongProgress: 0,
+              timelineProgresses: [],
+            };
 
-      if (parisProgress > 0) {
+      if (
+        cameraProgress.parisProgress > 0 ||
+        cameraProgress.guangzhouProgress > 0 ||
+        cameraProgress.hongKongProgress > 0 ||
+        cameraProgress.timelineProgresses.some((eventProgress) => eventProgress > 0)
+      ) {
         container.style.clipPath = "";
         container.style.removeProperty("-webkit-clip-path");
-        applyParisCamera(map, parisProgress);
-        updateParisMarker(parisMarkerElement, parisProgress);
+        applyTimelineCamera(map, cameraProgress);
         return;
       }
 
-      updateParisMarker(parisMarkerElement, 0);
       fitNorthView(map, container);
 
       if (clipToVietnam && vietnamDataForClip) {
@@ -493,16 +807,6 @@ export default function NorthMapScene({
             );
           }
 
-          if (enableParisScroll) {
-            parisMarkerElement = createParisMarkerElement();
-            parisMarker = new maplibregl.Marker({
-              element: parisMarkerElement,
-              anchor: "bottom",
-            })
-              .setLngLat(parisCenter)
-              .addTo(map);
-          }
-
           setIsLoaded(true);
         })
         .catch((error: unknown) => {
@@ -531,7 +835,6 @@ export default function NorthMapScene({
       isDisposed = true;
       window.removeEventListener(parisCameraProgressEvent, handleParisProgress);
       resizeObserver.disconnect();
-      parisMarker?.remove();
       container.style.clipPath = "";
       container.style.removeProperty("-webkit-clip-path");
       map.remove();
