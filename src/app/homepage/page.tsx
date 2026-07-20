@@ -1130,7 +1130,7 @@ export default function Homepage() {
             style={{ transform: "translate3d(0, 100%, 0)" }}
           >
             <div
-              className="absolute bottom-[-12vh] left-0 h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
+              className="absolute bottom-0 left-0 h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/vietnam-timeline-background.png')",
                 backgroundPosition: "center 42%",
