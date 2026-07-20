@@ -133,6 +133,7 @@ type TimelineEvent = {
   meta: string;
   title: string;
   description: string;
+  details: string[];
   coordinates: string;
   mapWindow: MapWindow;
   transitionVh: number;
@@ -146,7 +147,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hương Cảng · Tháng 10, 1930",
     title: "Thông qua Luận cương chính trị",
     description:
-      "Hội nghị Trung ương thông qua Luận cương chính trị, bổ sung nền tảng lý luận và định hướng đấu tranh của Đảng trong giai đoạn đầu.",
+      "Hội nghị Trung ương tháng 10/1930 thảo luận và thông qua Luận cương chính trị do Trần Phú dự thảo, đồng thời kiện toàn tổ chức lãnh đạo trung ương trong giai đoạn đầu của Đảng.",
+    details: [
+      "Văn kiện xác định những vấn đề cơ bản về mục tiêu, lực lượng và phương pháp đấu tranh của cách mạng Đông Dương.",
+      "Trần Phú được bầu làm Tổng Bí thư đầu tiên, góp phần định hình nền nếp lãnh đạo, tổ chức và công tác tư tưởng của Đảng.",
+    ],
     coordinates: "22.3193°N · 114.1694°E",
     mapWindow: hongKongMapWindow,
     transitionVh: 1.4,
@@ -158,7 +163,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Nghệ An - Hà Tĩnh · 1930-1931",
     title: "Cao trào Xô viết Nghệ Tĩnh",
     description:
-      "Phong trào công nông ở Nghệ An, Hà Tĩnh phát triển mạnh, thể hiện sức huy động quần chúng và năng lực lãnh đạo của tổ chức Đảng mới.",
+      "Từ phong trào đấu tranh của công nhân và nông dân, Nghệ An - Hà Tĩnh trở thành trung tâm cao trào cách mạng 1930-1931, nơi nhiều cuộc biểu tình, bãi công và hoạt động tự vệ đỏ diễn ra liên tiếp.",
+    details: [
+      "Từ tháng 9/1930, một số địa phương ở Nghệ Tĩnh hình thành chính quyền Xô viết, tổ chức đời sống làng xã theo tinh thần cách mạng.",
+      "Cao trào là cuộc thử thách lớn đầu tiên về khả năng tập hợp quần chúng và lãnh đạo đấu tranh của Đảng sau khi thành lập.",
+    ],
     coordinates: "18.3559°N · 105.7042°E",
     mapWindow: { left: 57, top: 18, width: 30, height: 42 },
     transitionVh: 2.2,
@@ -167,10 +176,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Ma Cao",
     year: "1935",
     number: "06",
-    meta: "Ma Cao · Tháng 3, 1935",
+    meta: "Ma Cao · 27-31/03/1935",
     title: "Đại hội đại biểu lần thứ nhất của Đảng",
     description:
-      "Đại hội I diễn ra trong bối cảnh Đảng khôi phục tổ chức sau khủng bố trắng và phong trào 1930-1931.",
+      "Đại hội I của Đảng Cộng sản Đông Dương họp tại Ma Cao trong bối cảnh tổ chức Đảng đang phục hồi sau khủng bố trắng và những tổn thất nặng nề sau phong trào 1930-1931.",
+    details: [
+      "Đại hội có 13 đại biểu, đại diện cho các đảng bộ trong nước và ngoài nước, khi số đảng viên trong cả nước khoảng 600 người.",
+      "Nhiệm vụ trọng tâm là củng cố hệ thống tổ chức từ trung ương đến địa phương và bầu Ban Chấp hành Trung ương.",
+    ],
     coordinates: "22.1987°N · 113.5439°E",
     mapWindow: { left: 58, top: 42, width: 30, height: 34 },
     transitionVh: 2.2,
@@ -179,10 +192,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Pác Bó",
     year: "1941",
     number: "07",
-    meta: "Pác Bó, Cao Bằng · Tháng 5, 1941",
+    meta: "Pác Bó, Cao Bằng · 10-19/05/1941",
     title: "Hội nghị Trung ương 8 và thành lập Việt Minh",
     description:
-      "Hội nghị xác định giải phóng dân tộc là nhiệm vụ trung tâm, chuẩn bị trực tiếp cho Tổng khởi nghĩa Tháng Tám.",
+      "Dưới sự chủ trì của Nguyễn Ái Quốc, Hội nghị Trung ương 8 hoàn chỉnh chuyển hướng chiến lược, đặt nhiệm vụ giải phóng dân tộc lên hàng đầu và quyết định thành lập Mặt trận Việt Minh.",
+    details: [
+      "Việt Minh tập hợp các lực lượng yêu nước trong một mặt trận dân tộc thống nhất, mở rộng cơ sở chính trị ở vùng căn cứ Cao Bằng và nhiều địa phương.",
+      "Chủ trương này chuẩn bị trực tiếp về đường lối, lực lượng và tổ chức cho Tổng khởi nghĩa Tháng Tám năm 1945.",
+    ],
     coordinates: "22.8330°N · 106.3130°E",
     mapWindow: { left: 54, top: 14, width: 32, height: 40 },
     transitionVh: 2.1,
@@ -194,7 +211,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hà Nội · Tháng 8, 1945",
     title: "Cách mạng Tháng Tám",
     description:
-      "Tổng khởi nghĩa giành chính quyền diễn ra trên cả nước, trong đó Hà Nội giành chính quyền ngày 19/8/1945.",
+      "Thời cơ cách mạng chín muồi sau khi phát xít Nhật đầu hàng Đồng minh; Việt Minh phát động tổng khởi nghĩa, giành chính quyền ở nhiều địa phương trong tháng 8/1945.",
+    details: [
+      "Từ ngày 14 đến 18/8, nhiều xã, huyện nổi dậy; Hà Nội giành chính quyền ngày 19/8, Huế ngày 23/8 và Sài Gòn ngày 25/8.",
+      "Thắng lợi này lật đổ ách thống trị thực dân, phát xít và chế độ quân chủ, đưa Đảng từ hoạt động bí mật thành lực lượng lãnh đạo chính quyền cách mạng.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 57, top: 18, width: 31, height: 40 },
     transitionVh: 1.8,
@@ -206,7 +227,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Quảng trường Ba Đình · 02/09/1945",
     title: "Đọc Tuyên ngôn Độc lập",
     description:
-      "Chủ tịch Hồ Chí Minh tuyên bố thành lập nước Việt Nam Dân chủ Cộng hòa, mở ra kỷ nguyên độc lập dân tộc.",
+      "Tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh thay mặt Chính phủ lâm thời đọc Tuyên ngôn Độc lập, tuyên bố với nhân dân Việt Nam và thế giới sự ra đời của nước Việt Nam Dân chủ Cộng hòa.",
+    details: [
+      "Sự kiện ngày 2/9/1945 đánh dấu việc thiết lập nhà nước độc lập hiện đại đầu tiên của Việt Nam sau Cách mạng Tháng Tám.",
+      "Tuyên ngôn trở thành văn kiện nền tảng của quyền độc lập, tự do và chủ quyền quốc gia trong kỷ nguyên mới.",
+    ],
     coordinates: "21.0368°N · 105.8340°E",
     mapWindow: { left: 59, top: 20, width: 29, height: 38 },
     transitionVh: 1.2,
@@ -218,7 +243,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hà Nội · 19/12/1946",
     title: "Toàn quốc kháng chiến",
     description:
-      "Lời kêu gọi Toàn quốc kháng chiến mở đầu cuộc kháng chiến chống thực dân Pháp trên phạm vi cả nước.",
+      "Khi nỗ lực giữ hòa bình không còn khả năng ngăn chiến tranh, Chủ tịch Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến, mở đầu cuộc kháng chiến chống thực dân Pháp trên phạm vi cả nước.",
+    details: [
+      "Hà Nội nổ súng tối 19/12/1946; quân dân Thủ đô chiến đấu trong 60 ngày đêm để kìm chân địch và bảo vệ việc rút chuyển lực lượng đầu não.",
+      "Đường lối kháng chiến lâu dài, toàn dân, toàn diện và dựa vào sức mình là chính được triển khai trong thực tiễn.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 55, top: 14, width: 32, height: 42 },
     transitionVh: 1.3,
@@ -227,10 +256,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Tuyên Quang",
     year: "1951",
     number: "11",
-    meta: "Chiêm Hóa, Tuyên Quang · Tháng 2, 1951",
+    meta: "Vinh Quang, Chiêm Hóa · 11-19/02/1951",
     title: "Đại hội II của Đảng",
     description:
-      "Đại hội II đưa Đảng ra hoạt động công khai với tên Đảng Lao động Việt Nam trong bối cảnh kháng chiến chống Pháp.",
+      "Đại hội II họp tại Chiêm Hóa, Tuyên Quang, trong căn cứ kháng chiến Việt Bắc, nhằm đáp ứng yêu cầu đưa cuộc kháng chiến chống Pháp đến thắng lợi hoàn toàn và xây dựng Đảng.",
+    details: [
+      "Đại hội có 158 đại biểu chính thức, 53 đại biểu dự khuyết, đại diện cho hơn 766.000 đảng viên.",
+      "Đảng ra hoạt động công khai với tên Đảng Lao động Việt Nam; Chủ tịch Hồ Chí Minh được bầu làm Chủ tịch Đảng, Trường Chinh được bầu làm Tổng Bí thư.",
+    ],
     coordinates: "22.1469°N · 105.2573°E",
     mapWindow: { left: 54, top: 12, width: 32, height: 40 },
     transitionVh: 1.7,
@@ -242,7 +275,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Điện Biên Phủ · 07/05/1954",
     title: "Chiến thắng Điện Biên Phủ",
     description:
-      "Sau 55 ngày đêm chiến đấu, thắng lợi Điện Biên Phủ tạo bước ngoặt quyết định trong cuộc kháng chiến chống Pháp.",
+      "Sau 55 ngày đêm chiến đấu, quân dân Việt Nam đánh bại tập đoàn cứ điểm Điện Biên Phủ, giáng đòn quyết định vào kế hoạch quân sự của Pháp và tạo bước ngoặt trên bàn đàm phán quốc tế.",
+    details: [
+      "17 giờ 30 phút ngày 7/5/1954, sở chỉ huy trung tâm bị chiếm, tướng De Castries cùng Bộ Tham mưu tập đoàn cứ điểm ra hàng.",
+      "Chiến thắng trực tiếp dẫn tới việc ký Hiệp định Genève, kết thúc chiến tranh và lập lại hòa bình ở Đông Dương.",
+    ],
     coordinates: "21.3860°N · 103.0169°E",
     mapWindow: { left: 52, top: 18, width: 34, height: 40 },
     transitionVh: 1.9,
@@ -254,7 +291,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Genève · 21/07/1954",
     title: "Hiệp định Genève",
     description:
-      "Hội nghị Genève ghi nhận các nguyên tắc độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ của Việt Nam.",
+      "Hội nghị Genève về Đông Dương kết thúc bằng các hiệp định đình chỉ chiến sự, ghi nhận các quyền dân tộc cơ bản của Việt Nam: độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ.",
+    details: [
+      "Hội nghị bắt đầu bàn về Đông Dương ngày 8/5/1954, một ngày sau chiến thắng Điện Biên Phủ, và kéo dài 75 ngày đàm phán.",
+      "Hiệp định mở ra cục diện mới: miền Bắc bước vào xây dựng chủ nghĩa xã hội, miền Nam tiếp tục đấu tranh để thống nhất đất nước.",
+    ],
     coordinates: "46.2044°N · 6.1432°E",
     mapWindow: { left: 56, top: 14, width: 34, height: 44 },
     transitionVh: 2.9,
@@ -263,10 +304,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Hà Nội",
     year: "1960",
     number: "14",
-    meta: "Hà Nội · Tháng 9, 1960",
+    meta: "Hà Nội · 05-10/09/1960",
     title: "Đại hội III của Đảng",
     description:
-      "Đại hội III xác định nhiệm vụ cách mạng ở hai miền: xây dựng miền Bắc và đấu tranh thống nhất đất nước ở miền Nam.",
+      "Đại hội III họp tại Hà Nội, xác định đường lối cách mạng trong điều kiện đất nước tạm thời chia cắt: xây dựng chủ nghĩa xã hội ở miền Bắc và đấu tranh thống nhất nước nhà ở miền Nam.",
+    details: [
+      "Đại hội có 525 đại biểu chính thức, đại diện cho khoảng 500.000 đảng viên; Hồ Chí Minh được bầu làm Chủ tịch Đảng, Lê Duẩn làm Bí thư thứ nhất.",
+      "Đường lối hai nhiệm vụ chiến lược chi phối định hướng lãnh đạo của Đảng trong giai đoạn 1960-1975.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 57, top: 18, width: 31, height: 40 },
     transitionVh: 2.7,
@@ -275,10 +320,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Sài Gòn",
     year: "1975",
     number: "15",
-    meta: "Sài Gòn · 30/04/1975",
+    meta: "Sài Gòn · 26-30/04/1975",
     title: "Đại thắng mùa Xuân 1975",
     description:
-      "Chiến dịch Hồ Chí Minh kết thúc thắng lợi, miền Nam được giải phóng và mở đường cho thống nhất đất nước.",
+      "Chiến dịch Hồ Chí Minh là chiến dịch quyết chiến chiến lược cuối cùng của Tổng tiến công và nổi dậy mùa Xuân 1975, giải phóng Sài Gòn - Gia Định và kết thúc cuộc kháng chiến chống Mỹ, cứu nước.",
+    details: [
+      "Chiều 26/4/1975 chiến dịch mở màn; sáng 30/4, năm cánh quân tiến vào Sài Gòn, đánh chiếm các mục tiêu trọng yếu.",
+      "11 giờ 30 phút ngày 30/4, chính quyền Sài Gòn tuyên bố đầu hàng vô điều kiện, mở đường cho thống nhất đất nước về mặt nhà nước.",
+    ],
     coordinates: "10.7769°N · 106.7009°E",
     mapWindow: { left: 58, top: 36, width: 31, height: 42 },
     transitionVh: 2.1,
@@ -287,10 +336,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Hà Nội",
     year: "1976",
     number: "16",
-    meta: "Hà Nội · Tháng 12, 1976",
+    meta: "Hà Nội · 14-20/12/1976",
     title: "Đại hội IV của Đảng",
     description:
-      "Đại hội IV diễn ra sau thống nhất, xác định đường lối xây dựng chủ nghĩa xã hội trong phạm vi cả nước.",
+      "Sau khi đất nước thống nhất, Đại hội IV họp tại Hà Nội để xác định đường lối xây dựng chủ nghĩa xã hội trong phạm vi cả nước và chuyển sang giai đoạn tổ chức, quản lý quốc gia thống nhất.",
+    details: [
+      "Đại hội có 1.008 đại biểu, đại diện cho hơn 1,55 triệu đảng viên và nhiều đoàn quốc tế tham dự.",
+      "Đại hội thông qua đường lối phát triển kinh tế - văn hóa 1976-1980 và đánh dấu việc sử dụng tên Đảng Cộng sản Việt Nam.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 55, top: 16, width: 32, height: 42 },
     transitionVh: 2,
@@ -302,7 +355,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hà Nội · 15-18/12/1986",
     title: "Đại hội VI và đường lối Đổi mới",
     description:
-      "Đại hội VI xác lập quyết tâm đổi mới công tác lãnh đạo, quản lý và phát triển kinh tế - xã hội.",
+      "Đại hội VI nhìn thẳng vào khó khăn kinh tế - xã hội sau chiến tranh và thời kỳ bao cấp, khởi xướng công cuộc Đổi mới với tinh thần đổi mới tư duy, trước hết là tư duy kinh tế.",
+    details: [
+      "Đại hội có 1.129 đại biểu, thay mặt gần 1,9 triệu đảng viên trong toàn Đảng.",
+      "Đường lối mới nhấn mạnh đổi mới cơ chế quản lý, phát triển sản xuất, ổn định đời sống nhân dân và mở đường cho hội nhập sâu hơn.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 57, top: 18, width: 31, height: 40 },
     transitionVh: 1.4,
@@ -311,10 +368,14 @@ const futureTimelineEvents: TimelineEvent[] = [
     label: "Hà Nội",
     year: "1991",
     number: "18",
-    meta: "Hà Nội · Tháng 6, 1991",
+    meta: "Hà Nội · 24-27/06/1991",
     title: "Cương lĩnh xây dựng đất nước",
     description:
-      "Đại hội VII thông qua Cương lĩnh 1991, đưa ra khung định hướng chính trị cho giai đoạn sau Đổi mới.",
+      "Đại hội VII thông qua Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội, tạo khung định hướng chính trị - lý luận cho giai đoạn sau Đổi mới.",
+    details: [
+      "Đại hội đồng thời thông qua Chiến lược ổn định và phát triển kinh tế - xã hội đến năm 2000.",
+      "Cương lĩnh 1991 tổng kết tiến trình cách mạng Việt Nam và xác định những đặc trưng, mục tiêu, phương hướng lớn của mô hình phát triển xã hội chủ nghĩa.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 55, top: 20, width: 31, height: 38 },
     transitionVh: 1.3,
@@ -326,7 +387,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hà Nội · 2011-2021",
     title: "Cương lĩnh bổ sung và văn kiện Đại hội XIII",
     description:
-      "Các văn kiện tiếp tục nhấn mạnh xây dựng, chỉnh đốn Đảng, phát triển đất nước và hội nhập quốc tế.",
+      "Đại hội XI thông qua Cương lĩnh bổ sung, phát triển năm 2011; đến Đại hội XIII, các văn kiện tiếp tục cụ thể hóa mục tiêu phát triển đất nước đến giữa thế kỷ XXI.",
+    details: [
+      "Cương lĩnh 2011 kế thừa Cương lĩnh 1991, bổ sung nhận thức về mô hình chủ nghĩa xã hội và con đường phát triển trong điều kiện hội nhập.",
+      "Văn kiện Đại hội XIII nhấn mạnh xây dựng, chỉnh đốn Đảng và hệ thống chính trị, khơi dậy khát vọng phát triển đất nước, đổi mới đồng bộ và bảo vệ Tổ quốc.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 57, top: 18, width: 31, height: 40 },
     transitionVh: 1.4,
@@ -338,7 +403,11 @@ const futureTimelineEvents: TimelineEvent[] = [
     meta: "Hà Nội · 19-23/01/2026",
     title: "Đại hội XIV của Đảng",
     description:
-      "Đại hội XIV là mốc cập nhật mới nhất của timeline, đặt ở phần kết cho dòng lịch sử hiện đại.",
+      "Đại hội XIV diễn ra tại Hà Nội, tổng kết nhiệm kỳ Đại hội XIII và thông qua Nghị quyết cùng các văn kiện định hướng phát triển đất nước giai đoạn 2026-2030, tầm nhìn đến năm 2045.",
+    details: [
+      "Đại hội bầu Ban Chấp hành Trung ương khóa XIV gồm 200 đồng chí, trong đó có 180 ủy viên chính thức và 20 ủy viên dự khuyết.",
+      "Các định hướng sau Đại hội nhấn mạnh đổi mới mô hình tăng trưởng, khoa học - công nghệ, đổi mới sáng tạo, chuyển đổi số và nâng cao hiệu lực quản trị quốc gia.",
+    ],
     coordinates: "21.0278°N · 105.8342°E",
     mapWindow: { left: 55, top: 16, width: 34, height: 42 },
     transitionVh: 1.5,
@@ -374,6 +443,7 @@ function mapWindowToClipPath(mapWindow: MapWindow) {
 export default function Homepage() {
   const sceneRef = useRef<HTMLElement | null>(null);
   const artworkRef = useRef<HTMLDivElement | null>(null);
+  const introTitleRef = useRef<HTMLDivElement | null>(null);
   const mapLayerRef = useRef<HTMLDivElement | null>(null);
   const booksLayerRef = useRef<HTMLDivElement | null>(null);
   const flagLayerRef = useRef<HTMLDivElement | null>(null);
@@ -395,6 +465,7 @@ export default function Homepage() {
   useEffect(() => {
     const scene = sceneRef.current;
     const artworkElement = artworkRef.current;
+    const introTitleElement = introTitleRef.current;
     const mapElement = mapLayerRef.current;
     const booksElement = booksLayerRef.current;
     const flagElement = flagLayerRef.current;
@@ -420,6 +491,7 @@ export default function Homepage() {
     if (
       !scene ||
       !artworkElement ||
+      !introTitleElement ||
       !mapElement ||
       !booksElement ||
       !flagElement ||
@@ -441,6 +513,105 @@ export default function Homepage() {
       return;
     }
 
+    const ambientDrift = {
+      sceneY: 0,
+      sceneTargetY: 0,
+      artworkY: 0,
+      artworkTargetY: 0,
+      mapY: 0,
+      mapTargetY: 0,
+      booksY: 0,
+      booksTargetY: 0,
+      flagY: 0,
+      flagTargetY: 0,
+      pathY: 0,
+      pathTargetY: 0,
+      nextTargetAt: 0,
+    };
+    const layerState = {
+      backgroundRollY: 0,
+      artworkScale: 1,
+      mapX: mapStart.x,
+      mapY: mapStart.y,
+      mapScale: mapStart.scale,
+      booksX: booksStart.x,
+      booksY: booksStart.y,
+      booksScale: booksStart.scale,
+      flagX: flagStart.x,
+      flagY: flagStart.y,
+      flagScale: flagStart.scale,
+      pathY: pathStart.y,
+    };
+    const createAmbientOffset = (amplitude: number) =>
+      (Math.random() * 2 - 1) * amplitude;
+    const chooseAmbientTargets = (time: number) => {
+      ambientDrift.sceneTargetY = createAmbientOffset(12);
+      ambientDrift.artworkTargetY = createAmbientOffset(7);
+      ambientDrift.mapTargetY = createAmbientOffset(12);
+      ambientDrift.booksTargetY = createAmbientOffset(9);
+      ambientDrift.flagTargetY = createAmbientOffset(8);
+      ambientDrift.pathTargetY = createAmbientOffset(14);
+      ambientDrift.nextTargetAt = time + 1800 + Math.random() * 2600;
+    };
+    const moveTowardAmbientTargets = (strength: number) => {
+      ambientDrift.sceneY = lerp(
+        ambientDrift.sceneY,
+        ambientDrift.sceneTargetY,
+        strength,
+      );
+      ambientDrift.artworkY = lerp(
+        ambientDrift.artworkY,
+        ambientDrift.artworkTargetY,
+        strength,
+      );
+      ambientDrift.mapY = lerp(ambientDrift.mapY, ambientDrift.mapTargetY, strength);
+      ambientDrift.booksY = lerp(
+        ambientDrift.booksY,
+        ambientDrift.booksTargetY,
+        strength,
+      );
+      ambientDrift.flagY = lerp(
+        ambientDrift.flagY,
+        ambientDrift.flagTargetY,
+        strength,
+      );
+      ambientDrift.pathY = lerp(
+        ambientDrift.pathY,
+        ambientDrift.pathTargetY,
+        strength,
+      );
+    };
+    const applyAmbientLayerTransforms = () => {
+      const backgroundPosition = `center calc(42% + ${layerState.backgroundRollY}vh + ${ambientDrift.sceneY}px)`;
+      const topTexture = frameTopElement.firstElementChild;
+      const rightTexture = frameRightElement.firstElementChild;
+      const bottomTexture = frameBottomElement.firstElementChild;
+      const leftTexture = frameLeftElement.firstElementChild;
+
+      artworkElement.style.transform = `translate3d(0, ${ambientDrift.artworkY}px, 0) scale(${layerState.artworkScale})`;
+      scene.style.backgroundPosition = backgroundPosition;
+      mapElement.style.transform = `translate3d(${layerState.mapX}vw, calc(${layerState.mapY}vh + ${ambientDrift.mapY}px), 0) scale(${layerState.mapScale})`;
+      booksElement.style.transform = `translate3d(${layerState.booksX}vw, calc(${layerState.booksY}vh + ${ambientDrift.booksY}px), 0) scale(${layerState.booksScale})`;
+      flagElement.style.transform = `translate3d(${layerState.flagX}vw, calc(${layerState.flagY}vh + ${ambientDrift.flagY}px), 0) scale(${layerState.flagScale})`;
+      pathElement.style.transform = `translate3d(0, calc(${layerState.pathY}vh + ${ambientDrift.pathY}px), 0)`;
+
+      if (topTexture instanceof HTMLElement) {
+        topTexture.style.backgroundPosition = backgroundPosition;
+      }
+
+      if (rightTexture instanceof HTMLElement) {
+        rightTexture.style.backgroundPosition = backgroundPosition;
+      }
+
+      if (bottomTexture instanceof HTMLElement) {
+        bottomTexture.style.backgroundPosition = backgroundPosition;
+      }
+
+      if (leftTexture instanceof HTMLElement) {
+        leftTexture.style.backgroundPosition = backgroundPosition;
+      }
+    };
+
     const setLayerProgress = (scroll: number) => {
       const relativeScroll = scroll - scene.offsetTop;
       const travelDistance = window.innerHeight * 0.5;
@@ -451,6 +622,12 @@ export default function Homepage() {
       const guangzhouTransitionDistance = window.innerHeight * 3.2;
       const hongKongTransitionDistance = window.innerHeight * 2.4;
       const progress = clamp(relativeScroll / travelDistance, 0, 1);
+      const introProgress = easeInOut(
+        clamp(relativeScroll / (window.innerHeight * 0.72), 0, 1),
+      );
+      const introFadeProgress = easeInOut(
+        clamp((introProgress - 0.36) / 0.64, 0, 1),
+      );
       const zoomProgress = clamp(
         (relativeScroll - travelDistance) / zoomDistance,
         0,
@@ -607,15 +784,31 @@ export default function Homepage() {
         ...futureEasedProgresses,
       );
       const backgroundRollY = lerp(0, 8, backgroundRollProgress);
-      const backgroundPosition = `center calc(50% + ${backgroundRollY}vh)`;
 
+      layerState.backgroundRollY = backgroundRollY;
+      layerState.artworkScale = artworkScale;
+      layerState.mapX = mapX;
+      layerState.mapY = mapY;
+      layerState.mapScale = mapScale;
+      layerState.booksX = booksX;
+      layerState.booksY = booksY;
+      layerState.booksScale = booksScale;
+      layerState.flagX = flagX;
+      layerState.flagY = flagY;
+      layerState.flagScale = flagScale;
+      layerState.pathY = pathY;
       artworkElement.style.opacity = (1 - mapFade * 0.24).toString();
-      artworkElement.style.transform = `scale(${artworkScale})`;
-      scene.style.backgroundPosition = backgroundPosition;
-      mapElement.style.transform = `translate3d(${mapX}vw, ${mapY}vh, 0) scale(${mapScale})`;
-      booksElement.style.transform = `translate3d(${booksX}vw, ${booksY}vh, 0) scale(${booksScale})`;
-      flagElement.style.transform = `translate3d(${flagX}vw, ${flagY}vh, 0) scale(${flagScale})`;
-      pathElement.style.transform = `translate3d(0, ${pathY}vh, 0)`;
+      introTitleElement.style.opacity = (1 - introFadeProgress).toString();
+      introTitleElement.style.transform = `translate3d(${lerp(
+        0,
+        -5.8,
+        introProgress,
+      )}vw, ${lerp(0, -17, introProgress)}vh, 0) scale(${lerp(
+        1,
+        0.58,
+        introProgress,
+      )})`;
+      applyAmbientLayerTransforms();
       transitionMapElement.style.opacity = mapFade.toString();
       transitionMapElement.style.clipPath = mapWindowToClipPath(visibleMapWindow);
       frameTopElement.style.opacity = frameProgress.toString();
@@ -631,27 +824,15 @@ export default function Homepage() {
       frameLeftElement.style.bottom = `${mapWindowBottom}vh`;
       frameLeftElement.style.width = `${frameMapWindow.left}vw`;
       const sideTextureTop = `-${frameMapWindow.top}vh`;
-      const topTexture = frameTopElement.firstElementChild;
       const rightTexture = frameRightElement.firstElementChild;
-      const bottomTexture = frameBottomElement.firstElementChild;
       const leftTexture = frameLeftElement.firstElementChild;
 
-      if (topTexture instanceof HTMLElement) {
-        topTexture.style.backgroundPosition = backgroundPosition;
-      }
-
       if (rightTexture instanceof HTMLElement) {
-        rightTexture.style.top = sideTextureTop;
-        rightTexture.style.backgroundPosition = backgroundPosition;
-      }
-
-      if (bottomTexture instanceof HTMLElement) {
-        bottomTexture.style.backgroundPosition = backgroundPosition;
+        rightTexture.style.top = `calc(${sideTextureTop} - 12vh)`;
       }
 
       if (leftTexture instanceof HTMLElement) {
-        leftTexture.style.top = sideTextureTop;
-        leftTexture.style.backgroundPosition = backgroundPosition;
+        leftTexture.style.top = `calc(${sideTextureTop} - 12vh)`;
       }
 
       parisTextElement.style.opacity = parisTextOpacity.toString();
@@ -761,6 +942,9 @@ export default function Homepage() {
       lerp: 0.08,
       smoothWheel: true,
     });
+    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let ambientAnimationFrame = 0;
+    let previousAmbientTime = performance.now();
 
     const handleScroll = (instance: Lenis) => {
       setLayerProgress(instance.scroll);
@@ -775,7 +959,29 @@ export default function Homepage() {
     window.addEventListener("resize", handleResize);
     setLayerProgress(window.scrollY);
 
+    if (!reduceMotionQuery.matches) {
+      chooseAmbientTargets(previousAmbientTime);
+
+      const animateAmbientDrift = (time: number) => {
+        if (time >= ambientDrift.nextTargetAt) {
+          chooseAmbientTargets(time);
+        }
+
+        const elapsed = Math.min(time - previousAmbientTime, 64);
+        previousAmbientTime = time;
+        moveTowardAmbientTargets(1 - Math.exp(-elapsed / 1400));
+        applyAmbientLayerTransforms();
+        ambientAnimationFrame = window.requestAnimationFrame(animateAmbientDrift);
+      };
+
+      ambientAnimationFrame = window.requestAnimationFrame(animateAmbientDrift);
+    }
+
     return () => {
+      if (ambientAnimationFrame) {
+        window.cancelAnimationFrame(ambientAnimationFrame);
+      }
+
       lenis.off("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
       lenis.destroy();
@@ -786,7 +992,10 @@ export default function Homepage() {
     <main
       ref={sceneRef}
       className="relative h-[5600vh] bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/images/vietnam-timeline-background.png')" }}
+      style={{
+        backgroundImage: "url('/images/vietnam-timeline-background.png')",
+        backgroundPosition: "center 42%",
+      }}
     >
       <div className="sticky top-0 h-screen overflow-hidden">
         <div
@@ -863,6 +1072,18 @@ export default function Homepage() {
         </div>
 
         <div
+          ref={introTitleRef}
+          className="pointer-events-none absolute left-[8vw] top-[23vh] z-30 max-w-[min(76rem,78vw)] origin-top-left text-[#402b16] will-change-[opacity,transform]"
+        >
+          <p className="text-[clamp(0.72rem,0.9vw,0.95rem)] font-semibold uppercase tracking-[0.22em] text-[#8a342b]">
+            Dòng lịch sử
+          </p>
+          <h1 className="mt-4 text-[clamp(1.9rem,4.1vw,4.9rem)] font-semibold leading-[1.02] text-[#2d1d0f]">
+            Quá trình hình thành và phát triển của Đảng Cộng Sản Việt Nam
+          </h1>
+        </div>
+
+        <div
           ref={transitionMapRef}
           className="pointer-events-none absolute inset-0 z-10 opacity-0 will-change-[clip-path,opacity,transform]"
           inert={true}
@@ -881,9 +1102,10 @@ export default function Homepage() {
             style={{ transform: "translate3d(0, -100%, 0)" }}
           >
             <div
-              className="absolute left-0 top-0 h-screen w-screen bg-cover bg-center bg-no-repeat"
+              className="absolute left-0 top-[-12vh] h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/vietnam-timeline-background.png')",
+                backgroundPosition: "center 42%",
               }}
             />
           </div>
@@ -894,9 +1116,10 @@ export default function Homepage() {
             style={{ transform: "translate3d(100%, 0, 0)" }}
           >
             <div
-              className="absolute right-[-1vw] top-[-15vh] h-screen w-screen bg-cover bg-center bg-no-repeat"
+              className="absolute right-[-1vw] top-[-27vh] h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/vietnam-timeline-background.png')",
+                backgroundPosition: "center 42%",
               }}
             />
           </div>
@@ -907,9 +1130,10 @@ export default function Homepage() {
             style={{ transform: "translate3d(0, 100%, 0)" }}
           >
             <div
-              className="absolute bottom-0 left-0 h-screen w-screen bg-cover bg-center bg-no-repeat"
+              className="absolute bottom-[-12vh] left-0 h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/vietnam-timeline-background.png')",
+                backgroundPosition: "center 42%",
               }}
             />
           </div>
@@ -920,9 +1144,10 @@ export default function Homepage() {
             style={{ transform: "translate3d(-100%, 0, 0)" }}
           >
             <div
-              className="absolute left-0 top-[-15vh] h-screen w-screen bg-cover bg-center bg-no-repeat"
+              className="absolute left-0 top-[-27vh] h-[112vh] w-screen bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/vietnam-timeline-background.png')",
+                backgroundPosition: "center 42%",
               }}
             />
           </div>
@@ -972,9 +1197,15 @@ export default function Homepage() {
               </h2>
 
               <p className="mt-4 max-w-[42ch] text-[clamp(0.86rem,0.98vw,1rem)] leading-7 text-[#4a3c2c]">
-                Từ Paris, một bước ngoặt tư tưởng mở ra con đường giải phóng
-                dân tộc theo khuynh hướng cách mạng vô sản.
+                Tại Paris, Nguyễn Ái Quốc đọc Sơ thảo lần thứ nhất những luận
+                cương về vấn đề dân tộc và thuộc địa của Lênin đăng trên báo
+                L&apos;Humanité, tìm thấy lời giải lý luận cho con đường giải phóng dân tộc.
               </p>
+
+              <ul className="mt-4 max-w-[44ch] space-y-2 text-[0.82rem] leading-6 text-[#5a4631]">
+                <li>Luận cương được đăng trên các số báo ngày 16 và 17/7/1920.</li>
+                <li>Mốc này mở đầu chuyển biến từ chủ nghĩa yêu nước sang lập trường cách mạng vô sản.</li>
+              </ul>
 
               <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a342b]">
                 48.8566°N · 2.3522°E
@@ -1027,10 +1258,15 @@ export default function Homepage() {
               </h2>
 
               <p className="mt-4 max-w-[42ch] text-[clamp(0.86rem,0.98vw,1rem)] leading-7 text-[#4a3c2c]">
-                Từ Quảng Châu, Nguyễn Ái Quốc mở các lớp huấn luyện, truyền bá
-                chủ nghĩa Mác-Lênin và chuẩn bị đội ngũ cán bộ cho phong trào
-                cách mạng trong nước.
+                Từ nòng cốt những hội viên trung kiên, Nguyễn Ái Quốc thành lập
+                Hội Việt Nam Cách mạng Thanh niên tại Quảng Châu, mở lớp huấn
+                luyện và xây dựng kênh truyền bá chủ nghĩa Mác - Lênin về Việt Nam.
               </p>
+
+              <ul className="mt-4 max-w-[44ch] space-y-2 text-[0.82rem] leading-6 text-[#5a4631]">
+                <li>Hội thông qua Chính cương, Điều lệ và Chương trình hành động.</li>
+                <li>Báo Thanh Niên và các bài giảng sau này tập hợp trong Đường Kách mệnh góp phần chuẩn bị tư tưởng, tổ chức và cán bộ cho việc thành lập Đảng.</li>
+              </ul>
 
               <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a342b]">
                 23.1291°N · 113.2644°E
@@ -1075,7 +1311,7 @@ export default function Homepage() {
               <div className="mb-3 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7a5a33]">
                 <span>Hương Cảng</span>
                 <span className="h-px w-8 bg-[#8a342b]/40" />
-                <span>Đầu năm 1930</span>
+                <span>03-07/02/1930</span>
               </div>
 
               <h2 className="max-w-[20ch] text-[clamp(1.55rem,2.05vw,2.4rem)] font-semibold leading-[1.08] text-[#2b1d11]">
@@ -1083,10 +1319,15 @@ export default function Homepage() {
               </h2>
 
               <p className="mt-4 max-w-[42ch] text-[clamp(0.86rem,0.98vw,1rem)] leading-7 text-[#4a3c2c]">
-                Tại Hương Cảng, Nguyễn Ái Quốc chủ trì hội nghị hợp nhất các tổ
-                chức cộng sản, thống nhất đường lối và tổ chức cho phong trào
-                cách mạng Việt Nam.
+                Tại Cửu Long, Hương Cảng, Nguyễn Ái Quốc chủ trì Hội nghị hợp
+                nhất các tổ chức cộng sản, lập nên một chính đảng thống nhất để
+                lãnh đạo phong trào cách mạng Việt Nam.
               </p>
+
+              <ul className="mt-4 max-w-[44ch] space-y-2 text-[0.82rem] leading-6 text-[#5a4631]">
+                <li>Hội nghị hợp nhất Đông Dương Cộng sản Đảng, An Nam Cộng sản Đảng và Đông Dương Cộng sản Liên đoàn.</li>
+                <li>Các văn kiện Chánh cương vắn tắt, Sách lược vắn tắt, Chương trình tóm tắt và Điều lệ vắn tắt trở thành Cương lĩnh đầu tiên của Đảng.</li>
+              </ul>
 
               <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a342b]">
                 22.3193°N · 114.1694°E
@@ -1153,6 +1394,12 @@ export default function Homepage() {
                   <p className="mt-4 max-w-[42ch] text-[clamp(0.86rem,0.98vw,1rem)] leading-7 text-[#4a3c2c]">
                     {event.description}
                   </p>
+
+                  <ul className="mt-4 max-w-[44ch] space-y-2 text-[0.82rem] leading-6 text-[#5a4631]">
+                    {event.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
 
                   <p className="mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a342b]">
                     {event.coordinates}
